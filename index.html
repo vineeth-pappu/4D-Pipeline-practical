@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>4D Pipeline sample task - Zoom to cursor</title>    
+    <style>
+    body { font-family: sans-serif; padding: 0 32px; width: 640px; margin: 8px auto; background-color: #eee;}
+    div#canvas { border: 2px solid black; margin: 8px 0; background-color: #fff;} 
+    </style>
+    <script src="three.min.js"></script>
+    <script src="orbitControls.js"></script>
+    <script>
+    var control = null;
+    
+    function update( dt ) {
+      control.update( dt );
+    }
+    
+    window.onload = function() {
+
+        var renderer = new THREE.WebGLRenderer({ alpha: true });
+        var width = 640;
+        var height = 480;
+        renderer.setSize( width, height );
+        renderer.setClearColor( 0xFFFFFF, 0);
+        
+        var div = document.getElementById('canvas')
+        div.appendChild( renderer.domElement );
+
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(
+            70,
+            width / height,
+            0.1,
+            10000
+        );
+        camera.position.set( 0, 10, 10 );
+        camera.lookAt( scene.position );
+        
+        control = new THREE.OrbitControls( camera );
+
+        var geometry = new THREE.CubeGeometry( 5, 5, 5 );
+        var material = new THREE.MeshLambertMaterial( { color: 0xFF0000 } );
+        var mesh = new THREE.Mesh( geometry, material );
+        scene.add( mesh );
+
+        var light = new THREE.PointLight( 0xFFFF00 );
+        light.position.set( 10, 0, 10 );
+        scene.add( light );
+
+        var dt = 10;
+        var renderFunc = function() {
+          update(dt);
+          renderer.render(scene,camera);
+        };
+      
+        setInterval(renderFunc,dt);
+
+    };
+    </script>
+</head>
+<body>
+<h3>4D Pipeline sample task - Zoom to cursor</h3>
+<div id=canvas></div>
+
+    <p><strong>Mission:</strong></p>
+    <p> Modify this project so that the mousewheel zoom behaves like <a href="http://www.sketchup.com/">SketchUp</a> in regards to the zooming.</p>
+    <p> Currently it will always zoom in and out of the viewport center and, on some browsers, will scroll the page at the same time.
+        Please change so that mousewheel zooms in/out on the cursor position, and fix any confusing interaction with the surrounding page.</p>
+    <p> As much as possible try to reproduce the behaviour of Sketchup's own zoom behaviour when in 'orbit' mode.</p>
+    <p> Note that when the cursor is positioned in the center of the viewport,
+        an ideal solution should produce zooming behaviour virtually identical to the existing behaviour.</p>
+
+    <p><em>Time to spend 2-5 hours.</em></p>
+    <p>Upon completion please send back zipped project for review.</p>
+
+</body>
+</html>
